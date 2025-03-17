@@ -1,15 +1,24 @@
-import { Text, View } from "react-native";
+import { createStackNavigator } from '@react-navigation/stack';
+import WelcomeScreen from '../app/(root)/Welcome/welcome';
+import LoginScreen from '../app/(root)/Auth/Login';
 
-export default function Index() {
+const Stack = createStackNavigator();
+
+const AppNavigator = () => {
   return (
-    <View
-      style={{
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <Text>Edit app/index.tsx to edit this screen.</Text>
-    </View>
+    <Stack.Navigator>
+      <Stack.Screen 
+        name="WelcomeScreen" 
+        component={WelcomeScreen} 
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen 
+        name="LoginScreen" 
+        component={LoginScreen}
+        options={{ headerShown: false }} 
+      />
+    </Stack.Navigator>
   );
-}
+};
+
+export default AppNavigator;

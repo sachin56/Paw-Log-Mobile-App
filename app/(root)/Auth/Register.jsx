@@ -1,55 +1,43 @@
 import React, { useState } from "react";
 import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image, Dimensions, Alert } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { apiRequest } from "../utils/apiHandler"; 
-import { SignUp } from "../Auth/Register"; 
-
+import { apiRequest } from "../utils/apiHandler"; // Adjust path as needed
 
 const { width, height } = Dimensions.get("window");
 
-const LoginScreen = ({ navigation }) => {
+const SignUpScreen = ({ navigation }) => {
+  const [name, setName] = useState("");
+  const [phone_number, setPhoneNumber] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const handleLogin = async () => {
-    if (!email || !password) {
-      Alert.alert("Error", "Please enter email and password.");
+  const handleSignUp = async () => {
+    if (!name || !email ||!phone_number || !password || !confirmPassword) {
+      Alert.alert("Error", "All fields are required.");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      Alert.alert("Error", "Passwords do not match.");
       return;
     }
 
     setLoading(true);
     try {
-      const response = await apiRequest("POST", "login", { email, password });
+      const response = await apiRequest("POST", "register", { name, email, password,phone_number });
 
       if (response?.token) {
         await AsyncStorage.setItem("token", response.token);
         navigation.replace("Home"); 
       } else {
-        Alert.alert("Login Failed", response?.message || "Invalid credentials.");
+        Alert.alert("Registration Failed", response?.message || "Something went wrong.");
       }
     } catch (error) {
       Alert.alert("Error", error.response?.data?.message || "Something went wrong.");
     } finally {
       setLoading(false);
-    }
-  };
-
-  const handleGoogleSignIn = async () => {
-    try {
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      console.log(userInfo); // Use this info for authentication or redirect
-    } catch (error) {
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        console.log("User cancelled the login process");
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        console.log("Login is in progress");
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        console.log("Play services are not available");
-      } else {
-        console.log("Error", error);
-      }
     }
   };
 
@@ -62,9 +50,16 @@ const LoginScreen = ({ navigation }) => {
       </View>
 
       <View style={styles.bottomContainer}>
-        <Text style={styles.title}>Welcome Back!</Text>
-        <Text style={styles.subtitle}>Sign in to continue</Text>
+        <Text style={styles.title}>Create Account</Text>
+        <Text style={styles.subtitle}>Sign up to get started</Text>
 
+        <TextInput
+          style={styles.input}
+          placeholder="Full Name"
+          placeholderTextColor="#666"
+          value={name}
+          onChangeText={setName}
+        />
         <TextInput
           style={styles.input}
           placeholder="Email"
@@ -76,29 +71,37 @@ const LoginScreen = ({ navigation }) => {
         />
         <TextInput
           style={styles.input}
+          placeholder="Phone Number"
+          placeholderTextColor="#666"
+          value={phone_number}
+          onChangeText={setPhoneNumber}
+        />
+        <TextInput
+          style={styles.input}
           placeholder="Password"
           placeholderTextColor="#666"
           secureTextEntry
           value={password}
           onChangeText={setPassword}
         />
+        <TextInput
+          style={styles.input}
+          placeholder="Confirm Password"
+          placeholderTextColor="#666"
+          secureTextEntry
+          value={confirmPassword}
+          onChangeText={setConfirmPassword}
+        />
 
-        <TouchableOpacity>
-          <Text style={styles.forgotPassword}>Forgot Password?</Text>
+        <TouchableOpacity style={styles.button} onPress={handleSignUp} disabled={loading}>
+          <Text style={styles.buttonText}>{loading ? "Signing Up..." : "Sign Up"}</Text>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button} onPress={handleLogin} disabled={loading}>
-          <Text style={styles.buttonText}>{loading ? "Signing In..." : "Sign In"}</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity onPress={() => navigation.navigate("SignUp")}>
-          <Text style={styles.signupText}>Don't have an account? Sign Up</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.googleButton} onPress={handleGoogleSignIn}>
-          <Text style={styles.googleButtonText}>Sign in with Google</Text>
+        <TouchableOpacity onPress={() => navigation.navigate("Login")}>
+          <Text style={styles.loginText}>Already have an account? Sign In</Text>
         </TouchableOpacity>
       </View>
+      
     </View>
   );
 };
@@ -149,7 +152,6 @@ const styles = StyleSheet.create({
     color: "#333",
     backgroundColor: "#FFF",
   },
-  forgotPassword: { alignSelf: "flex-end", color: "#FFA500", marginBottom: 20 },
   button: {
     backgroundColor: "#FFA500",
     paddingVertical: 15,
@@ -163,29 +165,8 @@ const styles = StyleSheet.create({
     shadowRadius: 8,
     elevation: 6,
   },
-
-    // Google Login Button Style
-    googleButton: {
-      backgroundColor: "#4285F4", // Google blue
-      paddingVertical: 15,
-      width: "100%",
-      alignItems: "center",
-      borderRadius: 10,
-      marginTop: 15,
-      shadowColor: "#4285F4",
-      shadowOffset: { width: 0, height: 4 },
-      shadowOpacity: 0.6,
-      shadowRadius: 8,
-      elevation: 6,
-    },
-    googleButtonText: {
-      fontSize: 18,
-      fontWeight: "bold",
-      color: "#FFF",
-    },
-  
   buttonText: { fontSize: 18, fontWeight: "bold", color: "#FFF" },
-  signupText: { color: "#FFA500", fontSize: 16 },
+  loginText: { color: "#FFA500", fontSize: 16 },
 });
 
-export default LoginScreen;
+export default SignUpScreen;

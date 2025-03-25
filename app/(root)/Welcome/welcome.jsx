@@ -42,7 +42,7 @@ const WelcomeScreen = ({ navigation }) => {
       {/* Top Gradient Background */}
       <LinearGradient colors={["#FFD700", "#FFA500"]} style={styles.topContainer}>
         <View style={styles.imageWrapper}>
-          <Image source={require("../../../assets/images/dog.jpg")} style={styles.dogImage} />
+          <Image source={require("../../../assets/images/happy.png")} style={styles.dogImage} />
         </View>
 
         {/* Static Paw Log Text (No Animation) */}

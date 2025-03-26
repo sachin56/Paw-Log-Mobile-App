@@ -20,7 +20,7 @@ const LoginScreen = ({ navigation }) => {
 
     setLoading(true);
     try {
-      const response = await apiRequest("POST", "login", { email, password });
+      const response = await apiRequest("POST", "login", { email, password,fcm_token:'23445' });
 
       if (response?.token) {
         await AsyncStorage.setItem("token", response.token);

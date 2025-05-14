@@ -1,0 +1,23 @@
+{
+    "build": {
+      "production": {
+        "distribution": "store",
+        "android": {
+          "gradleCommand": ":app:assembleRelease"
+        },
+        "ios": {
+          "simulator": false
+        }
+      },
+      "development": {
+        "distribution": "internal",
+        "android": {
+          "gradleCommand": ":app:assembleDebug"
+        },
+        "ios": {
+          "simulator": true
+        }
+      }
+    }
+  }
+  

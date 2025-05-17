@@ -19,6 +19,9 @@ export default function RootLayout() {
         <Stack.Screen name="ShopView" options={{headerShown:false}}/>
          <Stack.Screen name="PetFood" options={{headerShown:false}}/>
           <Stack.Screen name="Home" options={{headerShown:false}}/>
+          <Stack.Screen name="jobListingsScreen" options={{headerShown:false}}/>
+          <Stack.Screen name="petSittersScreen" options={{headerShown:false}}/>
+
     </Stack>
 
     

@@ -33,7 +33,7 @@ const Index = () => {
           { label: "Appointment", image: book, route: "Book" },
           { label: "My Pets", image: pet, route: "myPets" },
           { label: "E-Book", image: book2, route: "eBook" },
-          { label: "Pet Sitting", image: sitting, route: "" },
+          { label: "Pet Sitting", image: sitting, route: "petSittersScreen" },
           { label: "Stores", image: store, route: "PetShopsView" },
         ].map(({ label, image, route }, i) => (
           <TouchableOpacity key={i} onPress={() => route && navigation.navigate(route)} style={styles.card}>

@@ -188,7 +188,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     borderRadius: 10,
     marginTop: 10,
-    height: 30 
+    height: 35 
   },
   viewButtonLink: {
     flex: 1,
